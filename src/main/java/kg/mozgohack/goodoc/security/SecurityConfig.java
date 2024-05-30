@@ -55,7 +55,7 @@ public class SecurityConfig {
                 .requestMatchers("/ws/**").permitAll()
                 .requestMatchers("/wss/**").permitAll()
                 .requestMatchers("/main/**").permitAll()
-                .anyRequest().authenticated());
+                .anyRequest().permitAll());
         return http.build();
     }
     @Bean
