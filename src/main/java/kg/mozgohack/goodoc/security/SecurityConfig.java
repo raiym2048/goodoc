@@ -4,10 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -19,44 +24,14 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
-        http.csrf(CsrfConfigurer::disable)
-                .cors().and()
-                .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(  "/api/v1/auth/**",
-                        "/v2/api-docs",
-                        "/v3/api-docs",
-                        "/v3/api-docs/**",
-                        "/swagger-resources",
-                        "/swagger-resources/**",
-                        "/configuration/ui",
-                        "/configuration/security",
-                        "/swagger-ui/**",
-                        "/webjars/**",
-                        "/swagger-ui.html",
-                        "/user/**",
-                        "/medicine/**",
-                        "/hacker/**",
-                        "/api/v1/management/**").permitAll()
-                .requestMatchers("/swagger-resources/**").permitAll()
-                .requestMatchers("/swagger-ui/**").permitAll()
-                .requestMatchers("/webjars/**").permitAll()
-                .requestMatchers("/event/**").authenticated()
-                .requestMatchers("/category/**").permitAll()
-                .requestMatchers("/admin/**").permitAll()
-                .requestMatchers("/task/**").permitAll()
-                .requestMatchers("/hacker/**").permitAll()
-                .requestMatchers("/user/**").permitAll()
-                .requestMatchers("/vacancy/**").permitAll()
-                .requestMatchers("/api/v1/management/**").permitAll()
-                .requestMatchers("/level/**").permitAll()
-                .requestMatchers("/file/**").permitAll()
-                .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/ws/**").permitAll()
-                .requestMatchers("/wss/**").permitAll()
-                .requestMatchers("/main/**").permitAll()
-                .anyRequest().permitAll());
-        return http.build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/auth/**","/public/**", "/chief/**", "/**").permitAll()
+                        .anyRequest().permitAll())
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+               .build();
     }
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
