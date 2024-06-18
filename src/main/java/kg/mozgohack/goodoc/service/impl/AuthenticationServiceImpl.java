@@ -2,6 +2,7 @@ package kg.mozgohack.goodoc.service.impl;
 
 import kg.mozgohack.goodoc.dto.AuthenticationRequest;
 import kg.mozgohack.goodoc.dto.AuthenticationResponse;
+import kg.mozgohack.goodoc.dto.user.RegisterRequest;
 import kg.mozgohack.goodoc.dto.user.UserResponse;
 import kg.mozgohack.goodoc.entities.User;
 import kg.mozgohack.goodoc.enums.Role;
@@ -32,10 +33,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     @Override
-    public void register(AuthenticationRequest request) {
+    public void register(RegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent())
             throw new BadCredentialsException("this email is already exist!");
         User user = new User();
+        user.setFirstname(request.getFirstname());
+        user.setLastname(request.getLastname());
         user.setEmail(request.getEmail());
         user.setPassword(encoder.encode(request.getPassword()));
         user.setRole(Role.CLIENT);

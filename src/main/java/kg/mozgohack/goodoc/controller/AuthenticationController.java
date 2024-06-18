@@ -2,6 +2,7 @@ package kg.mozgohack.goodoc.controller;
 
 import kg.mozgohack.goodoc.dto.AuthenticationRequest;
 import kg.mozgohack.goodoc.dto.AuthenticationResponse;
+import kg.mozgohack.goodoc.dto.user.RegisterRequest;
 import kg.mozgohack.goodoc.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ public class AuthenticationController {
     private final AuthenticationService service;
 
     @PostMapping("/register")
-    public void register(@RequestBody AuthenticationRequest request){
+    public void register(@RequestBody RegisterRequest request){
         service.register(request);
     }
     @PostMapping("/login")
