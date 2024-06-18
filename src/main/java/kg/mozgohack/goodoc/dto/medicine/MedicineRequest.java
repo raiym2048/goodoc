@@ -12,6 +12,5 @@ public class MedicineRequest {
     private String name;
     private String medicineTypeName;
     private TakeTimeRequest takeTimeRequest;
-    private Integer count;
 
 }

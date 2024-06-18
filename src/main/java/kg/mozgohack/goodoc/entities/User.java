@@ -27,6 +27,9 @@ public class User implements UserDetails {
     private Boolean isActive = false;
     @OneToMany
     private List<Medicine> medicines;
+
+    @OneToMany
+    private List<Medicine> takenMedicine;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (role == null) {
